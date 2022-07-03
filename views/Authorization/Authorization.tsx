@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 // Components
 import Input from 'components/Input/Input';
-import Button from 'components/Button/Button';
+import CustomButton from 'components/Button/CustomButton';
 
 import Email from 'assets/icons/email.svg';
 import {useFormik} from 'formik';
@@ -25,7 +25,7 @@ const Authorization = () => {
   const formik = useFormik({
     initialValues: initialFormValues,
     onSubmit: values => {
-      console.log('siema');
+      console.log(values);
     },
   });
 
@@ -38,7 +38,7 @@ const Authorization = () => {
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.headerText}>TryThis</Text>
-          <Text style={[styles.headerText, styles.textSecondPart]}>
+          <Text style={[styles.headerText, styles.headerTextSecondPart]}>
             Hardware
           </Text>
         </View>
@@ -55,10 +55,14 @@ const Authorization = () => {
           icon={EmailIcon}>
           {formik.values.password}
         </Input>
-        <Button>LOGIN</Button>
-        <View style={styles.passwordRecovery}>
+        <CustomButton onPress={formik.handleSubmit}>LOGIN</CustomButton>
+        <View style={styles.optionContainer}>
           <Text style={styles.text}>Forgot password?</Text>
-          <Text style={[styles.text, styles.recoveryButton]}>Recover here</Text>
+          <Text style={[styles.text, styles.textButton]}>Recover here</Text>
+        </View>
+        <View style={[styles.optionContainer, styles.absolute]}>
+          <Text style={styles.text}>Don't have account?</Text>
+          <Text style={[styles.text, styles.textButton]}>Signup here</Text>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -81,13 +85,17 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginBottom: 16,
   },
+  headerTextSecondPart: {
+    color: colors.green,
+  },
   text: {
     fontFamily: 'Lato-Regular',
   },
-  textSecondPart: {
+  textButton: {
     color: colors.green,
+    marginLeft: 5,
   },
-  passwordRecovery: {
+  optionContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
@@ -96,6 +104,10 @@ const styles = StyleSheet.create({
   recoveryButton: {
     color: colors.green,
     marginLeft: 5,
+  },
+  absolute: {
+    position: 'absolute',
+    bottom: 20,
   },
 });
 

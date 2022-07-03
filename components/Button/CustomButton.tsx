@@ -4,9 +4,10 @@ import {colors} from 'styles/global';
 
 interface Props {
   children: string;
+  onPress: () => void;
 }
 
-const Button = ({children}: Props) => {
+const CustomButton = ({children, onPress}: Props) => {
   const [isPressed, setPressed] = useState(false);
 
   const changeColor = (value: boolean) => {
@@ -31,6 +32,7 @@ const Button = ({children}: Props) => {
 
   return (
     <Pressable
+      onPress={() => onPress()}
       onPressIn={() => changeColor(true)}
       onPressOut={() => changeColor(false)}
       style={styles.container}>
@@ -39,4 +41,4 @@ const Button = ({children}: Props) => {
   );
 };
 
-export default Button;
+export default CustomButton;
