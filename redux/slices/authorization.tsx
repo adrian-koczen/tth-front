@@ -1,27 +1,24 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 interface State {
-  loading: boolean;
-  authToken: string | null;
+  authorized: boolean;
 }
 
 const initialState: State = {
-  loading: true,
-  authToken: null,
+  authorized: false,
 };
 
 const authorizationSlice = createSlice({
   name: 'authorization',
   initialState: initialState,
   reducers: {
-    verifyToken: state => {
-      console.log('verify token slice');
-      state.authToken = 'authToken';
-      state.loading = false;
+    setAuthorized: (state, action) => {
+      const isAuthorized = action.payload;
+      state.authorized = isAuthorized;
     },
   },
 });
 
-export const {verifyToken} = authorizationSlice.actions;
+export const {setAuthorized} = authorizationSlice.actions;
 
 export default authorizationSlice.reducer;

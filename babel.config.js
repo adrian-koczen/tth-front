@@ -17,5 +17,6 @@ module.exports = {
         root: ['.'],
       },
     ],
+    ['module:react-native-dotenv'],
   ],
 };

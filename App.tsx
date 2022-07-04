@@ -5,15 +5,15 @@ import AuthorizationCheck from 'hoc/Authorization';
 // Redux
 import {Provider} from 'react-redux';
 import {store} from 'redux/store/store';
-// Views
-import AuthorizationView from 'views/Authorization/Authorization';
+
+import {Text} from 'react-native';
 
 const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
         <AuthorizationCheck>
-          <AuthorizationView />
+          <Text>User authorizated xd</Text>
         </AuthorizationCheck>
       </NavigationContainer>
     </Provider>

@@ -6,12 +6,19 @@ import {
   Keyboard,
   Text,
 } from 'react-native';
+import axios from 'axios';
+import * as Yup from 'yup';
+import {API_URL} from '@env';
+//Redux
+import {connect} from 'react-redux';
+import {AppDispatch} from 'redux/store/store';
+import {setAuthorized} from 'redux/slices/authorization';
 // Components
 import Input from 'components/Input/Input';
 import CustomButton from 'components/Button/CustomButton';
 import {useFormik} from 'formik';
+// Styles
 import {colors} from 'styles/global';
-import * as Yup from 'yup';
 // Icons
 import Email from 'assets/icons/email.svg';
 import Lock from 'assets/icons/lock.svg';
@@ -28,14 +35,31 @@ const formValidationSchema = Yup.object().shape({
   password: Yup.string().required('Field required'),
 });
 
-const AuthorizationView = () => {
+interface Props {
+  dispatch?: AppDispatch;
+}
+
+const AuthorizationView = ({dispatch}: Props) => {
   const formik = useFormik({
     validationSchema: formValidationSchema,
     initialValues: initialFormValues,
-    onSubmit: values => {
-      console.log(values);
+    onSubmit: () => {
+      loginRequest();
     },
   });
+
+  const loginRequest = async () => {
+    try {
+      const res = await axios.post('http://10.0.2.2:3000/auth/login', {
+        email: formik.values.email,
+        password: formik.values.password,
+      });
+      dispatch && dispatch(setAuthorized({isAuthorized: true}));
+    } catch (error) {
+      console.log(error.response.data);
+      // alert
+    }
+  };
 
   const closeKeyboard = () => {
     Keyboard.dismiss();
@@ -123,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthorizationView;
+export default connect(null, null)(AuthorizationView);
