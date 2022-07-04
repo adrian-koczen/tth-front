@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   TouchableWithoutFeedback,
@@ -9,23 +9,32 @@ import {
 // Components
 import Input from 'components/Input/Input';
 import CustomButton from 'components/Button/CustomButton';
-
-import Email from 'assets/icons/email.svg';
 import {useFormik} from 'formik';
 import {colors} from 'styles/global';
-
+import * as Yup from 'yup';
+// Icons
+import Email from 'assets/icons/email.svg';
+import Lock from 'assets/icons/lock.svg';
 const EmailIcon = <Email width={20} height={20} color={colors.gray} />;
+const LockIcon = <Lock width={20} height={20} color={colors.gray} />;
 
 const initialFormValues = {
-  email: 'email',
-  password: 'password',
+  email: '',
+  password: '',
 };
+
+const formValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Please enter email').required('Field required'),
+  password: Yup.string().required('Field required'),
+});
 
 const Authorization = () => {
   const formik = useFormik({
+    validationSchema: formValidationSchema,
     initialValues: initialFormValues,
     onSubmit: values => {
       console.log(values);
+      //console.log(formik.errors);
     },
   });
 
@@ -45,14 +54,18 @@ const Authorization = () => {
         <Input
           onChangeText={formik.handleChange('email')}
           onBlur={formik.handleBlur('email')}
-          icon={EmailIcon}>
+          icon={EmailIcon}
+          errors={formik.errors.email}
+          placeholder="email">
           {formik.values.email}
         </Input>
         <Input
           onChangeText={formik.handleChange('password')}
           onBlur={formik.handleBlur('password')}
           hiddenText={true}
-          icon={EmailIcon}>
+          icon={LockIcon}
+          errors={formik.errors.password}
+          placeholder="password">
           {formik.values.password}
         </Input>
         <CustomButton onPress={formik.handleSubmit}>LOGIN</CustomButton>
