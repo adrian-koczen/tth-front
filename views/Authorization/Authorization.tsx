@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   TouchableWithoutFeedback,
@@ -28,13 +28,12 @@ const formValidationSchema = Yup.object().shape({
   password: Yup.string().required('Field required'),
 });
 
-const Authorization = () => {
+const AuthorizationView = () => {
   const formik = useFormik({
     validationSchema: formValidationSchema,
     initialValues: initialFormValues,
     onSubmit: values => {
       console.log(values);
-      //console.log(formik.errors);
     },
   });
 
@@ -124,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Authorization;
+export default AuthorizationView;

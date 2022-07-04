@@ -1,13 +1,22 @@
 import React from 'react';
-import {TouchableWithoutFeedback} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+// Higher order components
+import AuthorizationCheck from 'hoc/Authorization';
+// Redux
+import {Provider} from 'react-redux';
+import {store} from 'redux/store/store';
 // Views
-import Authorization from 'views/Authorization/Authorization';
+import AuthorizationView from 'views/Authorization/Authorization';
 
 const App = () => {
   return (
-    <TouchableWithoutFeedback>
-      <Authorization />
-    </TouchableWithoutFeedback>
+    <Provider store={store}>
+      <NavigationContainer>
+        <AuthorizationCheck>
+          <AuthorizationView />
+        </AuthorizationCheck>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
