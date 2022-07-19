@@ -6232,7 +6232,7 @@
   dependencies:
     "dotenv" "^10.0.0"
 
-"react-native-flipper@^0.152.0", "react-native-flipper@>=0.100.0":
+"react-native-flipper@^0.152.0", "react-native-flipper@>=0.100.0", "react-native-flipper@latest":
   "integrity" "sha512-sbEHjDEUW/alhQ3Ov5f7FMKwcCvlWCUL9Q6mvoW4mSkSSG8h/Ppq5nO97lYJL1CfUq6e+jkDvp71Wb7YZ1ofDg=="
   "resolved" "https://registry.npmjs.org/react-native-flipper/-/react-native-flipper-0.152.0.tgz"
   "version" "0.152.0"
@@ -6242,7 +6242,7 @@
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz"
   "version" "0.0.6"
 
-"react-native-mmkv-storage@^0.7.6":
+"react-native-mmkv-storage@^0.7.6", "react-native-mmkv-storage@latest":
   "integrity" "sha512-Uxc8U3vRJMAeLIu9Dr8VpbaaCUlMd4vJfkEme2sXh2GGCYrbXqrE3XPLjtuA/fSd2VBKZNFBkJhyf4RzU9VX3A=="
   "resolved" "https://registry.npmjs.org/react-native-mmkv-storage/-/react-native-mmkv-storage-0.7.6.tgz"
   "version" "0.7.6"
@@ -6637,6 +6637,11 @@
   "version" "2.6.3"
   dependencies:
     "glob" "^7.1.3"
+
+"rn-mmkv-storage-flipper@^1.0.0":
+  "integrity" "sha512-6EJ/3qOmdi2tEp0EgqK1Ge68tXcqHCdue8uiz0FaSHs45y9+82MYcIpF41/0VlWHXMZ6QQToA2fkwlL8JIM5vA=="
+  "resolved" "https://registry.npmjs.org/rn-mmkv-storage-flipper/-/rn-mmkv-storage-flipper-1.0.0.tgz"
+  "version" "1.0.0"
 
 "rsvp@^4.8.4":
   "integrity" "sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA=="

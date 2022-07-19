@@ -6,17 +6,15 @@ import {
   Keyboard,
   Text,
 } from 'react-native';
-import axios from 'axios';
 import * as Yup from 'yup';
-import {API_URL} from '@env';
-//Redux
 import {connect} from 'react-redux';
-import {AppDispatch} from 'redux/store/store';
-import {setAuthorized} from 'redux/slices/authorization';
 // Components
 import Input from 'components/Input/Input';
 import CustomButton from 'components/Button/CustomButton';
 import {useFormik} from 'formik';
+// Localstorage
+import {useMMKVStorage} from 'react-native-mmkv-storage';
+import {MMKV} from 'App';
 // Styles
 import {colors} from 'styles/global';
 // Icons
@@ -35,11 +33,9 @@ const formValidationSchema = Yup.object().shape({
   password: Yup.string().required('Field required'),
 });
 
-interface Props {
-  dispatch?: AppDispatch;
-}
+const AuthorizationView = () => {
+  const [, setAuthToken] = useMMKVStorage<string>('auth-token', MMKV);
 
-const AuthorizationView = ({dispatch}: Props) => {
   const formik = useFormik({
     validationSchema: formValidationSchema,
     initialValues: initialFormValues,
@@ -50,13 +46,8 @@ const AuthorizationView = ({dispatch}: Props) => {
 
   const loginRequest = async () => {
     try {
-      const res = await axios.post('http://10.0.2.2:3000/auth/login', {
-        email: formik.values.email,
-        password: formik.values.password,
-      });
-      dispatch && dispatch(setAuthorized({isAuthorized: true}));
+      setAuthToken('correct-token2');
     } catch (error) {
-      console.log(error.response.data);
       // alert
     }
   };
