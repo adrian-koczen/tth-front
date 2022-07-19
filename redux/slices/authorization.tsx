@@ -12,7 +12,7 @@ const authorizationSlice = createSlice({
   name: 'authorization',
   initialState: initialState,
   reducers: {
-    setAuthorized: (state, action) => {
+    setAuthorized: (state, action: {payload: boolean; type: string}) => {
       const isAuthorized = action.payload;
       state.authorized = isAuthorized;
     },

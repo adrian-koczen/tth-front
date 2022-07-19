@@ -4,6 +4,7 @@ import {colors} from 'styles/global';
 
 interface Props {
   children: string;
+  disable?: boolean;
   onPress: () => void;
 }
 
