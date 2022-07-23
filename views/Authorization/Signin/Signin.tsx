@@ -1,22 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, TouchableWithoutFeedback, StyleSheet, Text} from 'react-native';
 import * as Yup from 'yup';
-// Axios
 import HTTPInstance from 'services/AxiosInstance';
-// Redux
 import {AppDispatch} from 'redux/store/store';
 import {connect} from 'react-redux';
-import {setAuthorized} from 'redux/slices/authorization';
-// Components
+import {setAuthorized, setEmailVerified} from 'redux/slices/authorization';
 import Input from 'components/Input/Input';
 import CustomButton from 'components/Button/CustomButton';
 import {useFormik} from 'formik';
-// Localstorage
 import {useMMKVStorage} from 'react-native-mmkv-storage';
 import {MMKV} from 'App';
-// Styles
 import {colors, typography} from 'styles/global';
-// Icons
 import Email from 'assets/icons/email.svg';
 import Lock from 'assets/icons/lock.svg';
 import KeyboardDismiss from 'services/KeyboardDismiss';
@@ -35,9 +29,15 @@ const formValidationSchema = Yup.object().shape({
 
 interface Props {
   dispatch?: AppDispatch;
+  emailVerifyStatus?: boolean;
+  navigation?: any;
 }
 
-const AuthorizationView = ({dispatch}: Props) => {
+const AuthorizationView = ({
+  dispatch,
+  emailVerifyStatus,
+  navigation,
+}: Props) => {
   const [, setAuthToken] = useMMKVStorage<string>('auth-token', MMKV);
 
   const formik = useFormik({
@@ -58,12 +58,20 @@ const AuthorizationView = ({dispatch}: Props) => {
       const res = await HTTPInstance.post('auth/login', body);
       setAuthToken(res.data.access_token);
       dispatch && dispatch(setAuthorized(true));
-
-      // Navigate to email verify view
     } catch (error: any) {
-      console.log(error.response.data);
+      const username = error.response.data.username;
+      if (username) {
+        dispatch && dispatch(setEmailVerified(username));
+      }
     }
   };
+
+  useEffect(() => {
+    if (emailVerifyStatus) {
+      navigation.navigate('emailVerify');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [emailVerifyStatus]);
 
   return (
     <TouchableWithoutFeedback onPress={KeyboardDismiss}>
@@ -148,4 +156,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, null)(AuthorizationView);
+const mapDispatchToProps = (state: any) => ({
+  emailVerifyStatus: state.authorization.emailVerify.state,
+});
+
+export default connect(mapDispatchToProps, null)(AuthorizationView);

@@ -5,10 +5,7 @@ interface Error {
   message: string;
 }
 
-const initialState: Array<Error> = [
-  {id: 0, message: 'Hello error'},
-  {id: 1, message: 'Hello error 2'},
-];
+const initialState: Array<Error> = [];
 
 const errorsSlice = createSlice({
   name: 'errors',

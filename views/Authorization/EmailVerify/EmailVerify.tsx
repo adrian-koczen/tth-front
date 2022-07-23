@@ -11,6 +11,9 @@ import {useFormik} from 'formik';
 import KeyboardDismiss from 'services/KeyboardDismiss';
 import * as Yup from 'yup';
 import CustomButton from 'components/Button/CustomButton';
+import HTTPInstance from 'services/AxiosInstance';
+import {connect} from 'react-redux';
+import {completeEmailVerified} from 'redux/slices/authorization';
 
 const FormValidationSchema = Yup.object().shape({
   verifyCode: Yup.number().max(999999),
@@ -20,14 +23,34 @@ const FormInitialValue = {
   verifyCode: '',
 };
 
-const EmailVerify = () => {
+interface Props {
+  username: string;
+  setEmailVerified?: any;
+  dispatch?: any;
+}
+
+const EmailVerify = ({username, dispatch}: Props) => {
   const formik = useFormik({
     initialValues: FormInitialValue,
     validationSchema: FormValidationSchema,
     onSubmit: () => {
       formik.resetForm();
+      emailVerifyRequest();
     },
   });
+
+  const emailVerifyRequest = async () => {
+    try {
+      await HTTPInstance.post('/user/emailVerify', {
+        username: username,
+        verifyCode: Number(formik.values.verifyCode),
+      });
+      dispatch && dispatch(completeEmailVerified(false));
+    } catch (error: any) {
+      const errorMessage = error.response.data;
+      console.log(errorMessage);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={KeyboardDismiss}>
@@ -92,4 +115,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmailVerify;
+const mapDispatchToProps = (state: any) => ({
+  username: state.authorization.emailVerify.username,
+});
+
+export default connect(mapDispatchToProps, null)(EmailVerify);
