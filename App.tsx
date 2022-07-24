@@ -1,14 +1,12 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {Text} from 'react-native';
-// Higher order components
 import AuthorizationCheck from 'authorization/Authorization';
-// Redux
 import {Provider} from 'react-redux';
-import {store} from 'redux/store/store';
-// Local storage
+import {store, persistor} from 'redux/store/store';
 import mmkvFlipper from 'rn-mmkv-storage-flipper';
 import {MMKVLoader} from 'react-native-mmkv-storage';
+import {PersistGate} from 'redux-persist/integration/react';
+import Logout from 'views/Profile/Logout/Logout';
 
 export const MMKV = new MMKVLoader()
   .withInstanceID('storage')
@@ -20,11 +18,13 @@ mmkvFlipper(MMKV);
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <AuthorizationCheck>
-          <Text>App content</Text>
-        </AuthorizationCheck>
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <AuthorizationCheck>
+            <Logout />
+          </AuthorizationCheck>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 };

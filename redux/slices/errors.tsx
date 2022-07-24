@@ -11,9 +11,13 @@ const errorsSlice = createSlice({
   name: 'errors',
   initialState: initialState,
   reducers: {
-    setError: (state, action) => {
+    setError: (state, action: {payload: string}) => {
       const errors = state;
-      errors.push(action.payload);
+      const newError = {
+        id: errors.length + 1,
+        message: action.payload,
+      };
+      errors.push(newError);
       state = errors;
     },
   },

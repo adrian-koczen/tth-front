@@ -14,6 +14,9 @@ import {colors, typography} from 'styles/global';
 import Email from 'assets/icons/email.svg';
 import Lock from 'assets/icons/lock.svg';
 import KeyboardDismiss from 'services/KeyboardDismiss';
+import {setError} from 'redux/slices/errors';
+import Errors from 'views/Errors/Errors';
+
 const EmailIcon = <Email width={20} height={20} color={colors.gray} />;
 const LockIcon = <Lock width={20} height={20} color={colors.gray} />;
 
@@ -31,12 +34,14 @@ interface Props {
   dispatch?: AppDispatch;
   emailVerifyStatus?: boolean;
   navigation?: any;
+  errors?: any;
 }
 
 const AuthorizationView = ({
   dispatch,
   emailVerifyStatus,
   navigation,
+  errors,
 }: Props) => {
   const [, setAuthToken] = useMMKVStorage<string>('auth-token', MMKV);
 
@@ -59,6 +64,10 @@ const AuthorizationView = ({
       setAuthToken(res.data.access_token);
       dispatch && dispatch(setAuthorized(true));
     } catch (error: any) {
+      const message = error.response.data.message;
+      if (message) {
+        dispatch && dispatch(setError(message));
+      }
       const username = error.response.data.username;
       if (username) {
         dispatch && dispatch(setEmailVerified(username));
@@ -76,6 +85,8 @@ const AuthorizationView = ({
   return (
     <TouchableWithoutFeedback onPress={KeyboardDismiss}>
       <View style={styles.container}>
+        {errors && <Errors errors={errors} />}
+        <Text style={styles.absoluteTop}>Hello top</Text>
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>TryThis</Text>
           <Text style={[styles.logoText, styles.logoTextSecondPart]}>
@@ -154,10 +165,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
   },
+  absoluteTop: {
+    position: 'absolute',
+    top: 0,
+  },
 });
 
 const mapDispatchToProps = (state: any) => ({
   emailVerifyStatus: state.authorization.emailVerify.state,
+  errors: state.errors,
 });
 
 export default connect(mapDispatchToProps, null)(AuthorizationView);

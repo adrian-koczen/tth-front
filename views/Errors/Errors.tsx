@@ -8,12 +8,16 @@ interface Props {
   }[];
 }
 
+const SingleError = ({message}: {message: string}) => {
+  return <Text style={styles.message}>{message}</Text>;
+};
+
 const Errors = ({errors}: Props) => {
   return (
     <View style={styles.container}>
       {errors &&
         errors.map(error => {
-          return <Text key={error.id}>{error.message}</Text>;
+          return <SingleError key={error.id} message={error.message} />;
         })}
     </View>
   );
@@ -24,6 +28,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 999,
     top: 0,
+  },
+  message: {
+    color: 'red',
   },
 });
 
